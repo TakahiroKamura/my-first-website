@@ -6,10 +6,11 @@ const Product: NextPage = () => {
     return (
         <div>
             <Header/>
-            <div>
-                製品紹介
-            </div>
-            <Footer/>
+			<div className='main-body'>
+				<h2>PRODUCT</h2>
+				<p>現在公開中の作品はありません。</p>
+			</div>
+			<Footer/>
         </div>
     );
 };

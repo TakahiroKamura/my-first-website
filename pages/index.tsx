@@ -3,9 +3,7 @@ import Body from './body';
 
 const Home: NextPage = () => {
   return (
-    <div>
-      <Body/>
-    </div>
+    <Body/>
   )
 }
 

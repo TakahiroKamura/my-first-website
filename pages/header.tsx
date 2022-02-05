@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 const Header: NextPage = ()=> {
     return (
-        <div>
+        <div className="header-main">
             <Head>
                 <meta charSet="utf-8"/>
                 <title>PMK GAMES オフィシャルサイト</title>
@@ -13,7 +13,7 @@ const Header: NextPage = ()=> {
                 PMK GAMES
             </div>
             <div className="site-contents">
-                <ul className="menu">
+                <ul>
                     <li><Link href="/">HOME</Link></li>
                     <li><Link href="/about">ABOUT</Link></li>
                     <li><Link href="/product">PRODUCT</Link></li>
