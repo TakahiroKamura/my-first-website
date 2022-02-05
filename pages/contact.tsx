@@ -1,13 +1,30 @@
 import type { NextPage } from 'next';
-import React, { useState } from 'react';
+import React, { useRouter } from 'next/router';
 import Header from './header';
 import Footer from './footer';
 
 const Contact: NextPage = () => {
-    const [count, setCount] = useState(0);
+    const router = useRouter();
 
-    const handleSubmit = () => {
-        
+    const sendContact = async (event: any) => {
+        event.preventDefault();
+
+        const res = await fetch(
+            "/api/send-contact",
+            {
+                body: JSON.stringify({
+                    name: event.target.name.value
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'POST'
+            }
+        );
+
+        const result = await res.json();
+        console.log(result);
+        router.push('/sent-contact')
     }
 
     return (
@@ -17,10 +34,9 @@ const Contact: NextPage = () => {
 				<h2>CONTACT</h2>
                 <p>当サークルへのお問い合わせこちらのフォームからお願いします。</p>
                 <p>※内容によってはお答えできないものもございます。</p>
-                <p>{count}</p>
-				<form className="contact-text">
-                    <textarea rows={10} required/>
-                    <button onClick={handleSubmit}>送信</button>
+				<form className="contact-text" onSubmit={sendContact}>
+                    <textarea id="name" rows={10} required/><br/>
+                    <button type="submit">送信</button>
                 </form>
 			</div>
 			<Footer/>

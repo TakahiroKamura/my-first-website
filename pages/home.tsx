@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import Header from './header';
 import Footer from './footer';
 
-const Body: NextPage = ()=> {
+const Home: NextPage = ()=> {
 	return (
 		<div>
 			<Header/>
@@ -21,4 +21,4 @@ const Body: NextPage = ()=> {
 	);
 }
 
-export default Body
+export default Home;
