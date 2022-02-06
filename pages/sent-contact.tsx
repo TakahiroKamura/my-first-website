@@ -12,8 +12,8 @@ const SentContact: NextPage = () => {
                 <p>いただいたお問い合わせを承りました。</p>
                 <p>返信にはしばしお時間をいただく場合、または内容によっては返信できない場合があることを予めご了承ください。</p>
                 <p>今後ともPMK GAMESをよろしくお願いいたします。</p>
-                <div className="link">
-                    <Link href="/">ホームへ戻る</Link>
+                <div>
+                    <Link href="/"><a>ホームへ戻る</a></Link>
                 </div>
             </div>
             <Footer/>

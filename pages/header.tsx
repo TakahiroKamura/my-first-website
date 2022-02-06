@@ -14,10 +14,10 @@ const Header: NextPage = ()=> {
             </div>
             <div className="site-contents">
                 <ul>
-                    <li><Link href="/">HOME</Link></li>
-                    <li><Link href="/about">ABOUT</Link></li>
-                    <li><Link href="/product">PRODUCT</Link></li>
-                    <li><Link href="/contact">CONTACT</Link></li>
+                    <li><Link href="/"><a>HOME</a></Link></li>
+                    <li><Link href="/about"><a>ABOUT</a></Link></li>
+                    <li><Link href="/product"><a>PRODUCT</a></Link></li>
+                    <li><Link href="/contact"><a>CONTACT</a></Link></li>
 			    </ul>
             </div>
         </div>
