@@ -1,10 +1,10 @@
 import type { NextPage } from 'next';
-import Body from './body';
+import Home from './home';
 
-const Home: NextPage = () => {
+const Index: NextPage = () => {
   return (
-    <Body/>
+    <Home/>
   )
 }
 
-export default Home;
+export default Index;
