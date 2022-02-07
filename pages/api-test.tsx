@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 
-const url: string = 'https://api.github.com/repos/zeit/next.js';
+const url: string = 'https://db.ygoprodeck.com/api/v7/cardinfo.php?archetype=Blue-Eyes';
 const key = {
     headers: {
         Accept: 'application/json'
@@ -13,13 +13,12 @@ const ApiTest: NextPage = () => {
 
     useEffect(() => {
         fetch(url, key)
-            .then((res) => {res.json()})
-            .then((json: any) => {setStars(json)});
+            .then((res: Response) => res.json())
+            .then((json: any) => setStars(json.data[0].name));
     }, [])
 
-    console.log(stars);
-    
-    
+    console.log(stars)
+
     return (
         <div>
             {stars}
