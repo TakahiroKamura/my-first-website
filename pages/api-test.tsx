@@ -1,27 +1,36 @@
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 
-const url: string = 'https://db.ygoprodeck.com/api/v7/cardinfo.php?archetype=Blue-Eyes';
-const key = {
-    headers: {
-        Accept: 'application/json'
-    }
+const url: string = 'https://db.ygoprodeck.com/api/v7/cardinfo.php?archetype=BlackWing';
+
+interface Card  {
+    id: string;
+    name: string;
+    type: string;
+    desc: string;
+    race: string;
+    archetype: string;
+    card_sets: string[];
+    card_images: string[];
+    card_prices: string[];
+}
+
+interface Result {
+    data: Card[];
 }
 
 const ApiTest: NextPage = () => {
-    const [stars, setStars] = useState<any>();
-
+    const [cards, setResult] = useState<Card[]>([]);
+    
     useEffect(() => {
-        fetch(url, key)
-            .then((res: Response) => res.json())
-            .then((json: any) => setStars(json.data[0].name));
-    }, [])
-
-    console.log(stars)
-
+        fetch(url)
+        .then((r: Response) => r.json())
+        .then((j: Result) => setResult(j.data));
+    }, []);
+    
     return (
         <div>
-            {stars}
+            {cards.map((card: Card) => <ul>{card.name}<li>{card.desc}</li></ul>)}
         </div>
     );
 };
