@@ -30,7 +30,7 @@ const ApiTest: NextPage = () => {
     
     return (
         <div>
-            {cards.map((card: Card) => <ul>{card.name}<li>{card.desc}</li></ul>)}
+            {cards.map((card: Card) => <ul key={card.id}>{card.name}<li>{card.desc}</li></ul>)}
         </div>
     );
 };
