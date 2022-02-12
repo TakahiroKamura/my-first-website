@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import Header from "./header";
 import Footer from "./footer";
-import React, { useState, BaseSyntheticEvent } from "react";
+import React, { useState, BaseSyntheticEvent, useEffect } from "react";
 
 type CardDetailItems = {
     key: string;
@@ -62,7 +62,7 @@ const SearchResult = (props: any): JSX.Element => {
     if (props.result === undefined) {
         return (
             <div>
-                {props.name}
+                検索結果はありません。
             </div>
         );
     } else {
@@ -70,8 +70,7 @@ const SearchResult = (props: any): JSX.Element => {
             <div>
                 <ul>
                     {props.result.map((card: Card) => (
-                        <li key={card.id}>{card.name}
-                        <p>{card.desc}</p></li>
+                        <li key={card.id}>{card.name}<p>{card.desc}</p></li>
                     ))}
                 </ul>
             </div>
@@ -85,7 +84,21 @@ const CardSearch: NextPage = () => {
     const [cardName, setCardName] = useState<string>('');
     const [cardType, setCardType] = useState<string>('monster');
     const [cardSubType, setCardSubType] = useState<string>('monster-normal');
-    const [searchResult, setSearchResult] = useState<Promise<Card[]>>();
+    const [cardData, setCardData] = useState<Promise<Card[]>>();
+
+    useEffect(() => {
+        const url: string = `https://db.ygoprodeck.com/api/v7/cardinfo.php?`;
+
+        const result = async(): Promise<Card[]> => {
+            const res = await fetch(url);
+            const data = await res.json();
+            setCardData(data.data);
+
+            return data.data;
+        }
+        result();
+
+    }, []);
 
     let items: CardDetailItems[] = CardTypeDetail(cardType);
 
@@ -103,30 +116,7 @@ const CardSearch: NextPage = () => {
     });
 
     const handleSubmit = ((e: BaseSyntheticEvent) => {
-        let type: string = '';
-
-        if (cardType === 'monster') {
-            type = 'Monster';
-        } else if (cardType === 'spell') {
-            type = '';
-        } else if (cardType === 'trap') {
-            type = '';
-        }
-
-        const url: string = `https://db.ygoprodeck.com/api/v7/cardinfo.php`;
-        const key: object = {
-            fname: cardName,
-            num: 20,
-            offset: 0,
-            format: 'tcg',
-            type: type
-        }
-
-        fetch(url, key)
-        .then((res) => res.json())
-        .then((json) => setSearchResult(json.data));
-
-        // ここで取得したデータを加工する
+        
     });
 
     return (
@@ -159,7 +149,7 @@ const CardSearch: NextPage = () => {
                         <input type="button" value="検索"  onClick={handleSubmit}/>
                     </div>
                 </form>
-                <SearchResult name={cardName} result={searchResult}/>
+                <SearchResult name={cardName} result={cardData}/>
             </div>
             <Footer/>
         </div>
