@@ -12,8 +12,10 @@ interface Card  {
     id: string;
     name: string;
     type: string;
-    desc: string;
     race: string;
+    atk: string;
+    def: string;
+    desc: string;
     archetype: string;
     card_sets: string[];
     card_images: string[];
@@ -29,37 +31,37 @@ const CardTypeDetail =  (type: string): CardDetailItems[] => {
     
     if (type === 'monster') {
         items = [
-            {key: 'monster-normal', value: '通常モンスター'},
-            {key: 'monster-effect', value: '効果モンスター'},
-            {key: 'monster-ritual', value: '儀式モンスター'},
-            {key: 'monster-fusion', value: '融合モンスター'},
-            {key: 'monster-synchro', value: 'シンクロモンスター'},
-            {key: 'monster-xyz', value: 'エクシーズモンスター'},
-            {key: 'monster-pendulum', value: 'ペンデュラムモンスター'},
-            {key: 'monster-link', value: 'リンクモンスター'}
+            {key: 'Normal', value: '通常モンスター'},
+            {key: 'Effect', value: '効果モンスター'},
+            {key: 'Ritual', value: '儀式モンスター'},
+            {key: 'Fusion', value: '融合モンスター'},
+            {key: 'Synchro', value: 'シンクロモンスター'},
+            {key: 'XYZ', value: 'エクシーズモンスター'},
+            {key: 'Pendulum', value: 'ペンデュラムモンスター'},
+            {key: 'Link', value: 'リンクモンスター'}
         ];
     } else if (type === 'spell') {
         items = [
-            {key: 'spell-normal', value: '通常魔法'},
-            {key: 'spell-ritual', value: '儀式魔法'},
-            {key: 'spell-continuous', value: '永続魔法'},
-            {key: 'spell-equip', value: '装備魔法'},
-            {key: 'spell-field', value: 'フィールド魔法'},
-            {key: 'spell-quick', value: '速攻魔法'}
+            {key: 'Normal', value: '通常魔法'},
+            {key: 'Ritual', value: '儀式魔法'},
+            {key: 'Continuous', value: '永続魔法'},
+            {key: 'Equip', value: '装備魔法'},
+            {key: 'Field', value: 'フィールド魔法'},
+            {key: 'Quick-Play', value: '速攻魔法'}
         ];
     } else if (type === 'trap') {
         items = [
-            {key: 'trap-normal', value: '通常罠'},
-            {key: 'trap-continuous', value: '永続罠'},
-            {key: 'trap-counter', value: 'カウンター罠'}
+            {key: 'Normal', value: '通常罠'},
+            {key: 'Continuous', value: '永続罠'},
+            {key: 'Counter', value: 'カウンター罠'}
         ];
     }
 
     return items;
 };
 
-const SearchResult = (props: any): JSX.Element => {
-    if (props.result === undefined) {
+const SearchResult = (props: {cards: Card[]}): JSX.Element => {
+    if (props.cards === undefined) {
         return (
             <div>
                 検索結果はありません。
@@ -69,8 +71,13 @@ const SearchResult = (props: any): JSX.Element => {
         return (
             <div>
                 <ul>
-                    {props.result.map((card: Card) => (
-                        <li key={card.id}>{card.name}<p>{card.desc}</p></li>
+                    {props.cards.map((card: Card) => (
+                        <li key={card.id}>
+                            <h3>{card.name}</h3>
+                            <p>{card.type}/{card.race}</p>
+                            <p>ATK:{card.atk} DEF:{card.def}</p>
+                            <p>{card.desc}</p>
+                        </li>
                     ))}
                 </ul>
             </div>
@@ -84,14 +91,15 @@ const CardSearch: NextPage = () => {
     const [cardName, setCardName] = useState<string>('');
     const [cardType, setCardType] = useState<string>('monster');
     const [cardSubType, setCardSubType] = useState<string>('monster-normal');
-    const [cardData, setCardData] = useState<Promise<Card[]>>();
+    const [cardData, setCardData] = useState<Card[]>([]);
+    const [extractedCards, setExtractedCards] = useState<Card[]>([]);
 
     useEffect(() => {
         const url: string = `https://db.ygoprodeck.com/api/v7/cardinfo.php?`;
 
         const result = async(): Promise<Card[]> => {
-            const res = await fetch(url);
-            const data = await res.json();
+            const res: Response = await fetch(url);
+            const data: Result = await res.json();
             setCardData(data.data);
 
             return data.data;
@@ -116,7 +124,44 @@ const CardSearch: NextPage = () => {
     });
 
     const handleSubmit = ((e: BaseSyntheticEvent) => {
-        
+        let cards: Card[] = []
+
+        if (cardType === 'monster') {
+            cardData.map((card: Card) => {
+                if (card.type.includes('Monster') && card.name.includes(cardName)) {
+                    if (cardSubType === 'Normal') {
+                        if (card.type.includes('Normal') && card.type.includes('Monster')) {
+                            cards.push(card);
+                        }
+                    } else if (cardSubType === 'Effect') {
+                        if (card.type === 'Effect Monster' || card.type === 'Flip Effect Monster' || card.type === 'Flip Tuner Effect Monster') {
+                            cards.push(card);
+                        }
+                    } else if (card.type.includes(cardSubType)) {
+                        cards.push(card);
+                    }
+                }
+            });
+        } else if (cardType === 'spell') {
+            cardData.map((card: Card) => {
+                if (card.type === 'Spell Card' && card.name.includes(cardName)) {
+                    if (card.race.includes(cardSubType)) {
+                        cards.push(card);
+                    }
+                }
+            });
+
+        } else if (cardType === 'trap') {
+            cardData.map((card: Card) => {
+                if (card.type === 'Trap Card' && card.name.includes(cardName)) {
+                    if (card.race.includes(cardSubType)) {
+                        cards.push(card);
+                    }
+                }
+            });
+        }
+
+        setExtractedCards(cards);
     });
 
     return (
@@ -124,7 +169,7 @@ const CardSearch: NextPage = () => {
             <Header/>
             <div className="main-body">
                 <h2>Yu-Gi-Oh カード検索(英語)</h2>
-                <form action="" method="post">
+                <form action="">
                     <div>
                         <label>カード名</label>
                         <input type="text" onChange={handleName}/>
@@ -149,7 +194,7 @@ const CardSearch: NextPage = () => {
                         <input type="button" value="検索"  onClick={handleSubmit}/>
                     </div>
                 </form>
-                <SearchResult name={cardName} result={cardData}/>
+                <SearchResult cards={extractedCards}/>
             </div>
             <Footer/>
         </div>
