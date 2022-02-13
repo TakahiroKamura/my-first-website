@@ -2,6 +2,7 @@ import { NextPage } from "next";
 import Header from "./header";
 import Footer from "./footer";
 import React, { useState, BaseSyntheticEvent, useEffect } from "react";
+import { listenerCount } from "process";
 
 type CardDetailItems = {
     key: string;
@@ -11,6 +12,8 @@ type CardDetailItems = {
 interface Card  {
     id: string;
     name: string;
+    level: string;
+    attribute: string;
     type: string;
     race: string;
     atk: string;
@@ -72,12 +75,7 @@ const SearchResult = (props: {cards: Card[]}): JSX.Element => {
             <div>
                 <ul>
                     {props.cards.map((card: Card) => (
-                        <li key={card.id}>
-                            <h3>{card.name}</h3>
-                            <p>{card.type}/{card.race}</p>
-                            <p>ATK:{card.atk} DEF:{card.def}</p>
-                            <p>{card.desc}</p>
-                        </li>
+                        <CardElement key={card.id} card={card}/>
                     ))}
                 </ul>
             </div>
@@ -85,20 +83,54 @@ const SearchResult = (props: {cards: Card[]}): JSX.Element => {
     }
 };
 
+const CardElement = (props: {card: Card}): JSX.Element => {
+    let levelAndAttribute: JSX.Element = <></>;
+    let atkAndDef: JSX.Element = <></>;
+
+    if (props.card === undefined) {
+        return (
+            <></>
+        );   
+    } else if (props.card.type.includes('Monster')) {
+        if (props.card.type.includes('XYZ')) {
+            levelAndAttribute = <p>Rank:{props.card.level} [{props.card.attribute}]</p>;
+        } else if (props.card.type.includes('Link')) {
+            levelAndAttribute = <p>Link:{props.card.level} [{props.card.attribute}]</p>;
+        } else {
+            levelAndAttribute = <p>Level:{props.card.level} [{props.card.attribute}]</p>;
+        }
+        atkAndDef = <p>ATK {props.card.atk} / DEF {props.card.def}</p>;
+    }
+
+    return (
+        <li key={props.card.id}>
+            <h3>{props.card.name}</h3>
+            {levelAndAttribute}
+            <p>{props.card.race}/{props.card.type}</p>
+            {atkAndDef}
+            <p>{props.card.desc}</p>
+        </li>
+    );
+};
+
 const CardSearch: NextPage = () => {
     const url: string = 'https://db.ygoprodeck.com/api/v7/cardinfo.php?archetype=BlackWing';
 
     const [cardName, setCardName] = useState<string>('');
     const [cardType, setCardType] = useState<string>('monster');
-    const [cardSubType, setCardSubType] = useState<string>('monster-normal');
+    const [cardTypeDetail, setCardTypeDetail] = useState<CardDetailItems[]>(CardTypeDetail(cardType));
+    const [cardSubType, setCardSubType] = useState<string>('Normal');
     const [cardData, setCardData] = useState<Card[]>([]);
     const [extractedCards, setExtractedCards] = useState<Card[]>([]);
 
     useEffect(() => {
         const url: string = `https://db.ygoprodeck.com/api/v7/cardinfo.php?`;
+        const key: object = {
+            cache: 'force-cache'
+        }
 
         const result = async(): Promise<Card[]> => {
-            const res: Response = await fetch(url);
+            const res: Response = await fetch(url, key);
             const data: Result = await res.json();
             setCardData(data.data);
 
@@ -108,15 +140,13 @@ const CardSearch: NextPage = () => {
 
     }, []);
 
-    let items: CardDetailItems[] = CardTypeDetail(cardType);
-
     const handleName = ((e:BaseSyntheticEvent) => {
         setCardName(e.target.value);
     });
 
     const handleRadio = ((e: BaseSyntheticEvent) => {
         setCardType(e.target.value);
-        items = CardTypeDetail(cardType);
+        setCardTypeDetail(CardTypeDetail(e.target.value));
     });
 
     const handleSelect = ((e: BaseSyntheticEvent) => {
@@ -185,7 +215,7 @@ const CardSearch: NextPage = () => {
                             <label>罠</label>
                         </div>
                         <select onChange={handleSelect}>
-                            {items.map((item) => 
+                            {cardTypeDetail.map((item) => 
                                 <option key={item.key} value={item.key}>{item.value}</option>
                             )}
                         </select>

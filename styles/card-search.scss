@@ -3,3 +3,15 @@
     margin: 1rem;
   }
 }
+
+.card-page {
+  a {
+    color: blue;
+    display: inline-block;
+    text-align: center;
+
+    :hover {
+      color: blue;
+    }
+  }
+}
