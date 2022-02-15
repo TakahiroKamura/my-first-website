@@ -2,7 +2,6 @@ import { NextPage } from "next";
 import Header from "./header";
 import Footer from "./footer";
 import React, { useState, BaseSyntheticEvent, useEffect } from "react";
-import { listenerCount } from "process";
 
 type CardDetailItems = {
     key: string;
@@ -13,6 +12,7 @@ interface Card  {
     id: string;
     name: string;
     level: string;
+    link: string;
     attribute: string;
     type: string;
     race: string;
@@ -28,6 +28,26 @@ interface Card  {
 interface Result {
     data: Card[];
 }
+
+const CheckNameIncludesKeywords = (name: string, keyword: string): boolean => {
+    let convertedName: string = '';
+    const keywords: string[] = keyword.split(' ');
+
+    if (keywords[0] === '') {
+        return true;
+    }
+
+    let result: boolean = true;
+
+    keywords.forEach((word: string) => {
+        convertedName = word[0].toUpperCase() + word.slice(1);
+        if (!name.includes(convertedName)) {
+            result = false;
+        }
+    });
+
+    return result;
+};
 
 const CardTypeDetail =  (type: string): CardDetailItems[] => {
     let items: CardDetailItems[] = [];
@@ -64,7 +84,7 @@ const CardTypeDetail =  (type: string): CardDetailItems[] => {
 };
 
 const SearchResult = (props: {cards: Card[]}): JSX.Element => {
-    if (props.cards === undefined) {
+    if (props.cards === undefined || props.cards.length <= 0) {
         return (
             <div>
                 検索結果はありません。
@@ -95,7 +115,7 @@ const CardElement = (props: {card: Card}): JSX.Element => {
         if (props.card.type.includes('XYZ')) {
             levelAndAttribute = <p>Rank:{props.card.level} [{props.card.attribute}]</p>;
         } else if (props.card.type.includes('Link')) {
-            levelAndAttribute = <p>Link:{props.card.level} [{props.card.attribute}]</p>;
+            levelAndAttribute = <p>Link:{props.card.link} [{props.card.attribute}]</p>;
         } else {
             levelAndAttribute = <p>Level:{props.card.level} [{props.card.attribute}]</p>;
         }
@@ -114,8 +134,6 @@ const CardElement = (props: {card: Card}): JSX.Element => {
 };
 
 const CardSearch: NextPage = () => {
-    const url: string = 'https://db.ygoprodeck.com/api/v7/cardinfo.php?archetype=BlackWing';
-
     const [cardName, setCardName] = useState<string>('');
     const [cardType, setCardType] = useState<string>('monster');
     const [cardTypeDetail, setCardTypeDetail] = useState<CardDetailItems[]>(CardTypeDetail(cardType));
@@ -158,7 +176,7 @@ const CardSearch: NextPage = () => {
 
         if (cardType === 'monster') {
             cardData.map((card: Card) => {
-                if (card.type.includes('Monster') && card.name.includes(cardName)) {
+                if (card.type.includes('Monster') && CheckNameIncludesKeywords(card.name, cardName)) {
                     if (cardSubType === 'Normal') {
                         if (card.type.includes('Normal') && card.type.includes('Monster')) {
                             cards.push(card);
@@ -174,7 +192,7 @@ const CardSearch: NextPage = () => {
             });
         } else if (cardType === 'spell') {
             cardData.map((card: Card) => {
-                if (card.type === 'Spell Card' && card.name.includes(cardName)) {
+                if (card.type === 'Spell Card' && CheckNameIncludesKeywords(card.name, cardName)) {
                     if (card.race.includes(cardSubType)) {
                         cards.push(card);
                     }
@@ -183,7 +201,7 @@ const CardSearch: NextPage = () => {
 
         } else if (cardType === 'trap') {
             cardData.map((card: Card) => {
-                if (card.type === 'Trap Card' && card.name.includes(cardName)) {
+                if (card.type === 'Trap Card' && CheckNameIncludesKeywords(card.name, cardName)) {
                     if (card.race.includes(cardSubType)) {
                         cards.push(card);
                     }
