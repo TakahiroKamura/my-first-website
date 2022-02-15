@@ -30,7 +30,6 @@ interface Result {
 }
 
 const CheckNameIncludesKeywords = (name: string, keyword: string): boolean => {
-    let convertedName: string = '';
     const keywords: string[] = keyword.split(' ');
 
     if (keywords[0] === '') {
@@ -40,8 +39,7 @@ const CheckNameIncludesKeywords = (name: string, keyword: string): boolean => {
     let result: boolean = true;
 
     keywords.forEach((word: string) => {
-        convertedName = word[0].toUpperCase() + word.slice(1);
-        if (!name.includes(convertedName)) {
+        if (!name.toLowerCase().includes(word.toLowerCase())) {
             result = false;
         }
     });
@@ -217,10 +215,11 @@ const CardSearch: NextPage = () => {
             <Header/>
             <div className="main-body">
                 <h2>Yu-Gi-Oh カード検索(英語)</h2>
-                <form action="">
+                <form>
                     <div>
                         <label>カード名</label>
                         <input type="text" onChange={handleName}/>
+                        <input className="input-dummy" type="text"/>
                     </div>
                     <div>
                         <label>カード種別</label>
