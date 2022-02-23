@@ -17,7 +17,12 @@ const Header: NextPage = ()=> {
                     <li><Link href="/"><a>HOME</a></Link></li>
                     <li><Link href="/about"><a>ABOUT</a></Link></li>
                     <li><Link href="/product"><a>PRODUCT</a></Link></li>
-                    <li><Link href="/card"><a>CARD</a></Link></li>
+                    <li className="multi-contents"><Link href="#"><a>WEB CONTENTS</a></Link>
+                        <ul className="sub-contents">
+                            <li><Link href="/law"><a>LAW STUDY</a></Link></li>
+                            <li><Link href="/card"><a>CARD SEARCH</a></Link></li>
+                        </ul>
+                    </li>
                     <li><Link href="/contact"><a>CONTACT</a></Link></li>
 			    </ul>
             </div>

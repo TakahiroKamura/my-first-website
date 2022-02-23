@@ -44,6 +44,24 @@
   }
 }
 
+.multi-contents {
+  width: 100%;
+
+  &:hover {
+    li {
+      width: 100%;
+      display: block;
+    }
+  }
+}
+
+.sub-contents {
+  li {
+    width: 100%;
+    display: none;
+  }
+}
+
 .root {
   background-color: white;
 }
