@@ -1,6 +1,7 @@
 import { NextPage } from "next";
-import Header from "./header";
-import Footer from "./footer";
+import Header from "./components/header";
+import Footer from "./components/footer";
+import Login from "./components/login";
 import React, { useState, useEffect } from "react";
 
 const LawStudy: NextPage = () => {
@@ -22,7 +23,7 @@ const LawStudy: NextPage = () => {
         <div>
             <Header/>
             <div className="main-body">
-                {lawBody}
+                <Login/>
             </div>
             <Footer/>
         </div>

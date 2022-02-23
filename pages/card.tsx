@@ -1,6 +1,6 @@
 import { NextPage } from "next";
-import Header from "./header";
-import Footer from "./footer";
+import Header from "./components/header";
+import Footer from "./components/footer";
 import React, { useState, BaseSyntheticEvent, useEffect } from "react";
 
 type CardDetailItems = {

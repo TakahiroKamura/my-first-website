@@ -1,6 +1,6 @@
 import { NextPage } from "next";
-import Header from "./header";
-import Footer from "./footer";
+import Header from "./components/header";
+import Footer from "./components/footer";
 import Link from "next/link";
 
 const SentContact: NextPage = () => {

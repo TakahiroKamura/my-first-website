@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import React, { useRouter } from 'next/router';
-import Header from './header';
-import Footer from './footer';
+import Header from './components/header';
+import Footer from './components/footer';
 
 const Contact: NextPage = () => {
     const router = useRouter();
