@@ -1,9 +1,9 @@
 import type { NextPage } from 'next';
 
-const Footer: NextPage = ()=> {
+const Footer: NextPage = () => {
     return (
         <footer>
-            <small>Copyright 2022 PMK GAMES</small>
+            <small>Copyright 2022 PMK Games</small>
         </footer>
     );
 };

@@ -1,30 +1,22 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Link from 'next/link';
 
-const Header: NextPage = ()=> {
+const Header: NextPage = () => {
     return (
-        <div className="header-main">
+        <div className="container">
             <Head>
-                <meta charSet="utf-8"/>
-                <title>PMK GAMES オフィシャルサイト</title>
+                <meta charSet="utf-8" />
+                <title>PMK Games オフィシャルサイト</title>
             </Head>
-            <div className="site-title">
-                PMK GAMES
-            </div>
-            <div className="site-contents">
-                <ul>
-                    <li><Link href="/"><a>HOME</a></Link></li>
-                    <li><Link href="/about"><a>ABOUT</a></Link></li>
-                    <li><Link href="/product"><a>PRODUCT</a></Link></li>
-                    <li className="multi-contents"><Link href="#"><a>WEB CONTENTS</a></Link>
-                        <ul className="sub-contents">
-                            <li><Link href="/law"><a>LAW STUDY</a></Link></li>
-                            <li><Link href="/card"><a>CARD SEARCH</a></Link></li>
-                        </ul>
-                    </li>
-                    <li><Link href="/contact"><a>CONTACT</a></Link></li>
-			    </ul>
+            <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+                <div>
+                    <h4>PMK Games</h4>
+                </div>
+                <a href="/" className="nav-link px-2 link-secondary">HOME</a>
+                <a href="/about" className="nav-link px-2 link-dark">ABOUT</a>
+                <a href="/product" className="nav-link px-2 link-dark">PRODUCT</a>
+                <a href="#" className="dropdown-header nav-link px-2 link-dark">WEB CONTENTS</a>
+                <a href="/contact" className="nav-link px-2 link-dark">CONTACT</a>
             </div>
         </div>
     );
