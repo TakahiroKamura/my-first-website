@@ -1,24 +1,34 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap';
 
 const Header: NextPage = () => {
+
     return (
-        <div className="container">
+        <header>
             <Head>
                 <meta charSet="utf-8" />
                 <title>PMK Games オフィシャルサイト</title>
             </Head>
-            <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-                <div>
-                    <h4>PMK Games</h4>
-                </div>
-                <a href="/" className="nav-link px-2 link-secondary">HOME</a>
-                <a href="/about" className="nav-link px-2 link-dark">ABOUT</a>
-                <a href="/product" className="nav-link px-2 link-dark">PRODUCT</a>
-                <a href="#" className="dropdown-header nav-link px-2 link-dark">WEB CONTENTS</a>
-                <a href="/contact" className="nav-link px-2 link-dark">CONTACT</a>
-            </div>
-        </div>
+            <Navbar bg="light" expand="lg">
+                <Container>
+                    <Navbar.Brand>PMK Games</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+                            <Nav.Link href="/">HOME</Nav.Link>
+                            <Nav.Link href="/about">ABOUT</Nav.Link>
+                            <Nav.Link href="/products">PRODUCTS</Nav.Link>
+                            <NavDropdown title="WEB CONTENTS" id="basic-nav-dropdown">
+                                <NavDropdown.Item href="/card">CARD</NavDropdown.Item>
+                                <NavDropdown.Item href="/law">LAW</NavDropdown.Item>
+                            </NavDropdown>
+                            <Nav.Link href="/contact">CONTACT</Nav.Link>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+        </header>
     );
 };
 

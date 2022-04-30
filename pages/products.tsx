@@ -5,12 +5,12 @@ import Footer from './components/footer';
 const Product: NextPage = () => {
     return (
         <div>
-            <Header/>
-			<div className='main-body'>
-				<h2>PRODUCT</h2>
-				<p>現在公開中の作品はありません。</p>
-			</div>
-			<Footer/>
+            <Header />
+            <div className='main-body'>
+                <h2>PRODUCTS</h2>
+                <p>現在公開中の作品はありません。</p>
+            </div>
+            <Footer />
         </div>
     );
 };
