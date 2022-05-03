@@ -10,9 +10,11 @@ const Header: NextPage = () => {
                 <meta charSet="utf-8" />
                 <title>PMK Games オフィシャルサイト</title>
             </Head>
+            <Navbar>
+                <Navbar.Brand>PMK Games</Navbar.Brand>
+            </Navbar>
             <Navbar bg="light" expand="lg">
                 <Container>
-                    <Navbar.Brand>PMK Games</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
