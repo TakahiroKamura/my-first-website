@@ -1,32 +1,36 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Link from 'next/link';
+import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap';
 
-const Header: NextPage = ()=> {
+const Header: NextPage = () => {
+
     return (
-        <div className="header-main">
+        <header>
             <Head>
-                <meta charSet="utf-8"/>
-                <title>PMK GAMES オフィシャルサイト</title>
+                <meta charSet="utf-8" />
+                <title>PMK Games オフィシャルサイト</title>
             </Head>
-            <div className="site-title">
-                PMK GAMES
-            </div>
-            <div className="site-contents">
-                <ul>
-                    <li><Link href="/"><a>HOME</a></Link></li>
-                    <li><Link href="/about"><a>ABOUT</a></Link></li>
-                    <li><Link href="/product"><a>PRODUCT</a></Link></li>
-                    <li className="multi-contents"><Link href="#"><a>WEB CONTENTS</a></Link>
-                        <ul className="sub-contents">
-                            <li><Link href="/law"><a>LAW STUDY</a></Link></li>
-                            <li><Link href="/card"><a>CARD SEARCH</a></Link></li>
-                        </ul>
-                    </li>
-                    <li><Link href="/contact"><a>CONTACT</a></Link></li>
-			    </ul>
-            </div>
-        </div>
+            <Navbar>
+                <Navbar.Brand>PMK Games</Navbar.Brand>
+            </Navbar>
+            <Navbar bg="light" expand="lg">
+                <Container>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+                            <Nav.Link href="/">HOME</Nav.Link>
+                            <Nav.Link href="/about">ABOUT</Nav.Link>
+                            <Nav.Link href="/products">PRODUCTS</Nav.Link>
+                            <NavDropdown title="WEB CONTENTS" id="basic-nav-dropdown">
+                                <NavDropdown.Item href="/card">CARD</NavDropdown.Item>
+                                <NavDropdown.Item href="/law">LAW</NavDropdown.Item>
+                            </NavDropdown>
+                            <Nav.Link href="/contact">CONTACT</Nav.Link>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+        </header>
     );
 };
 

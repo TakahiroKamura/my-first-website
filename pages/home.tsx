@@ -1,23 +1,39 @@
 import type { NextPage } from 'next';
 import Header from './components/header';
 import Footer from './components/footer';
+import { Card, CardGroup, Container } from 'react-bootstrap';
 
-const Home: NextPage = ()=> {
+interface NewInfo {
+	date: string;
+	text: string;
+}
+
+const Home: NextPage = () => {
+
 	return (
 		<div>
-			<Header/>
+			<Header />
 			<div className='main-body'>
-				<h1>PMK GAMESのウェブサイトへようこそ！</h1>
+				<h1>PMK Gamesのウェブサイトへようこそ！</h1>
+				<p>このサイトはゲーム製作サークル『PMK Games』の情報をお届けします。<br />無断転載等はお断りします。</p>
 				<h2>新着情報</h2>
-				<div className="news">
-					<p>2022/02/03 プロダクト情報更新</p>
-					<p>2022/02/02 サイト開設</p>
-				</div>
-				<h2></h2>
-				<p>このサイトはゲーム製作サークル『PMK GAMES』の情報をお届けします。<br/>無断転載等はお断りします。</p>
+				<Container>
+					{[
+						{ date: '2022/04/29', text: 'プロダクト情報更新' },
+						{ date: '2022/02/03', text: 'プロダクト情報更新' },
+						{ date: '2022/02/01', text: 'サイト開設' }
+					].map((info: NewInfo) => {
+						return (
+							<Card className="home-card" style={{ width: "80%" }}>
+								<Card.Header>{info.date}</Card.Header>
+								<Card.Body>{info.text}</Card.Body>
+							</Card>
+						)
+					})}
+				</Container>
 			</div>
-			<Footer/>
-		</div>
+			<Footer />
+		</div >
 	);
 }
 
